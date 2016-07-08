@@ -1,7 +1,12 @@
-## Put comments here that give an overall description of what your
-## functions do
+## It's always beneficial to cache the results which help us reduce the computation cost.
+## Following functions are an attempt to cache the inverse of a matrix.
 
-## Write a short comment describing this function
+## makeCacheMatrix Function takes a parameter x that is the input matrix whose inverse has to be returned.
+# It has various functions to
+# -> set value of the matrix
+# -> get value of the matrix
+# -> set value of inverse of the matrix
+# -> getvalue of inverse of the matrix
 
 makeCacheMatrix <- function(x = matrix()) {
     
@@ -17,17 +22,43 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## cacheSolve Function
+## NOTE-> This function assumes that the matrix is invertible.
+# returns the inverse of the matrix.
+# It is first checked whether the inverse of the given matrix is already computed.
+# If there's a cache value it will return it and if not computation is carried out and the value is setin the cache via
+# setinverse function.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        
         inv <- x$getinverse()
          if(!is.null(inv)) {
-        message("getting cached matrix.")
+        message("getting the cached inverse matrix.")
         return(inv)
          }
-    data <- x$get()
-    inv <- solve(data)
+    output <- x$get()
+    inv <- solve(output)
     x$setinverse(inv)
     inv
 }
+
+## Example
+# > x = rbind(c(1, 2), c(3, 4))
+# > m = makeCacheMatrix(x)
+# > m$get()
+#       [,1]  [,2]
+# [1,]   1     2
+# [2,]   3     4  
+
+## No cache in the first run
+# > cacheSolve(m)
+#           [,1]      [,2]
+# [1,]     -2.0         1.0
+# [2,]      1.5        -0.5
+
+# Retrieving from the cache in the second run
+# > cacheSolve(m)
+# getting the cached inverse matrix.
+#           [,1]       [,2]
+# [1,]      -2.0        1.0
+# [2,]       1.5       -0.5
